@@ -1,0 +1,17 @@
+---
+title: "ENVS-193DS Final"
+format: html
+---
+
+#### Github Repository
+
+<https://github.com/werickson13/ENVS-193DS_spring-2025_final.git>
+
+```{r}
+# reading in data
+sst <- read.csv("SST_update2023.csv")
+# load in packages
+
+```
+
+## Problem 1
