@@ -87,6 +87,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#b.-more-information-needed" id="toc-b.-more-information-needed" class="nav-link" data-scroll-target="#b.-more-information-needed">b. More Information Needed</a></li>
   <li><a href="#c.-suggestions-for-rewriting" id="toc-c.-suggestions-for-rewriting" class="nav-link" data-scroll-target="#c.-suggestions-for-rewriting">c.&nbsp;Suggestions for Rewriting</a></li>
   </ul></li>
+  <li><a href="#problem-2" id="toc-problem-2" class="nav-link" data-scroll-target="#problem-2">Problem 2</a>
+  <ul class="collapse">
+  <li><a href="#a.-cleaning-and-summarizing" id="toc-a.-cleaning-and-summarizing" class="nav-link" data-scroll-target="#a.-cleaning-and-summarizing">a. Cleaning and Summarizing</a></li>
+  <li><a href="#b.-visualize-the-data" id="toc-b.-visualize-the-data" class="nav-link" data-scroll-target="#b.-visualize-the-data">b. Visualize the Data</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -131,9 +136,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"~/Git_/ENVS-193DS_spring-2025_final/Data/SST_update2023.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate, <span class="at">warn.conflicts =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"~/Git_/ENVS-193DS_spring-2025_final/Data/SST_update2023.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="problem-1" class="level2">
@@ -149,8 +155,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="c.-suggestions-for-rewriting" class="level3">
 <h3 class="anchored" data-anchor-id="c.-suggestions-for-rewriting">c.&nbsp;Suggestions for Rewriting</h3>
-<p>Part 1:</p>
-<p>Part 2: We found a [small, medium, large] difference (η² = <strong>effect size</strong>) in average nitrogen load (kg/year) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands)(one-way ANOVA, F(<strong>degrees of freedom between groups, degrees of freedom within groups</strong>) = <strong>F value</strong>, p = 0.02, ⍺ = <strong>significance level</strong>). On average, [</p>
+<p>Part 1: We observed a [strong, weak] [positive, negative] relationship (Pearson’s r = <strong>correlation coefficient</strong>) between distance from headwaters (km) and annual total nitrogen load (kg/year) (t(<strong>degrees of freedom</strong>) = <strong>t value</strong>, p = 0.03, ⍺ = <strong>significance level</strong>).</p>
+<p>Part 2: We observed a [small, medium, large] difference (η² = <strong>effect size</strong>) in average nitrogen load (kg/year) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands)(one-way ANOVA, F(<strong>degrees of freedom between groups, degrees of freedom within groups</strong>) = <strong>F value</strong>, p = 0.02, ⍺ = <strong>significance level</strong>). On average, [source 1] tended to have less average nitrogen load than [source 2] (<strong>mean difference 1</strong> kg/year less, 95% CI: [<strong>lower bound, upper bound</strong>] kg/year) and [source 3] (<strong>mean difference 2</strong> kg/year less, 95% CI: [<strong>lower bound, upper bound</strong>] kg/year).</p>
+</section>
+</section>
+<section id="problem-2" class="level2">
+<h2 class="anchored" data-anchor-id="problem-2">Problem 2</h2>
+<section id="a.-cleaning-and-summarizing" class="level3">
+<h3 class="anchored" data-anchor-id="a.-cleaning-and-summarizing">a. Cleaning and Summarizing</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sst_clean <span class="ot">&lt;-</span> sst <span class="sc">|&gt;</span> <span class="co"># use sst data frame</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="co"># clean up column names</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">factor</span>(<span class="fu">year</span>(date), <span class="co"># create factor column displaying year</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">2018</span>,<span class="dv">2019</span>,<span class="dv">2020</span>,<span class="dv">2021</span>,<span class="dv">2022</span>,<span class="dv">2023</span>)), <span class="co"># use only these six years</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">month =</span> <span class="fu">factor</span>(<span class="fu">month</span>(date, <span class="at">label =</span> <span class="cn">TRUE</span>), <span class="co"># sort by month</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> month.abb, <span class="at">ordered =</span> <span class="cn">TRUE</span>))<span class="sc">|&gt;</span> <span class="co"># display abbreviated month names</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(year)) <span class="sc">|&gt;</span> <span class="co"># removes data from unwanted years</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(year, month) <span class="sc">|&gt;</span> <span class="co"># group year and month columns</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">mean_monthly_sst =</span> <span class="fu">mean</span>(temp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span>  <span class="co"># calculate mean monthly sst</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(sst_clean, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+  year  month mean_monthly_sst
+  &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
+1 2018  Oct               18.5
+2 2019  Aug               17.0
+3 2021  May               14.4
+4 2018  Jul               18.2
+5 2020  Mar               14.7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean) <span class="co"># show data frame structure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [72 × 3] (S3: tbl_df/tbl/data.frame)
+ $ year            : Factor w/ 6 levels "2018","2019",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ month           : Ord.factor w/ 12 levels "Jan"&lt;"Feb"&lt;"Mar"&lt;..: 1 2 3 4 5 6 7 8 9 10 ...
+ $ mean_monthly_sst: num [1:72] 15 14.3 13.5 12.8 13.6 ...</code></pre>
+</div>
+</div>
+</section>
+<section id="b.-visualize-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="b.-visualize-the-data">b. Visualize the Data</h3>
 </section>
 </section>
 

@@ -19,6 +19,7 @@ editor: visual
 library(tidyverse)
 library(gt)
 library(janitor)
+library(lubridate, warn.conflicts = FALSE)
 
 # reading in data
 sst <- read.csv("~/Git_/ENVS-193DS_spring-2025_final/Data/SST_update2023.csv")
@@ -38,10 +39,31 @@ The co-worker could also include analysis of the effect size (η²)which would g
 
 ### c. Suggestions for Rewriting
 
-Part 1: We observed a \[strong, weak\] \[positive, negative\] relationship (Pearson's r = **correlation coefficient**) between distance from headwaters (km) and annual total nitrogen load (kg/year) (F(**degrees of freedom**) = **F value**, p = 0.03, ⍺ = **significance level**).
+Part 1: We observed a \[strong, weak\] \[positive, negative\] relationship (Pearson's r = **correlation coefficient**) between distance from headwaters (km) and annual total nitrogen load (kg/year) (t(**degrees of freedom**) = **t value**, p = 0.03, ⍺ = **significance level**).
 
 Part 2: We observed a \[small, medium, large\] difference (η² = **effect size**) in average nitrogen load (kg/year) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands)(one-way ANOVA, F(**degrees of freedom between groups, degrees of freedom within groups**) = **F value**, p = 0.02, ⍺ = **significance level**). On average, \[source 1\] tended to have less average nitrogen load than \[source 2\] (**mean difference 1** kg/year less, 95% CI: \[**lower bound, upper bound**\] kg/year) and \[source 3\] (**mean difference 2** kg/year less, 95% CI: \[**lower bound, upper bound**\] kg/year).
 
 ## Problem 2
 
 ### a. Cleaning and Summarizing
+
+```{r}
+sst_clean <- sst |> # use sst data frame
+  clean_names() |> # clean up column names
+  mutate(year = factor(year(date), # create factor column displaying year
+                      levels = c(2018,2019,2020,2021,2022,2023)), # use only these six years
+         month = factor(month(date, label = TRUE), # sort by month
+                        levels = month.abb, ordered = TRUE))|> # display abbreviated month names
+    filter(!is.na(year)) |> # removes data from unwanted years
+    group_by(year, month) |> # group year and month columns
+    summarise(mean_monthly_sst = mean(temp, na.rm = TRUE)) |>  # calculate mean monthly sst
+  ungroup()
+slice_sample(sst_clean, n = 5)
+str(sst_clean) # show data frame structure
+```
+
+### b. Visualize the Data
+
+```{r}
+
+```
