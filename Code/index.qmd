@@ -1,6 +1,13 @@
 ---
 title: "ENVS-193DS Final"
-format: html
+author: "Wyatt Erickson"
+date: 6/8/25
+format: 
+  html: 
+    toc: true
+message: false
+warning: false
+editor: visual
 ---
 
 #### Github Repository
@@ -8,10 +15,33 @@ format: html
 <https://github.com/werickson13/ENVS-193DS_spring-2025_final.git>
 
 ```{r}
-# reading in data
-sst <- read.csv("SST_update2023.csv")
-# load in packages
+# load packages
+library(tidyverse)
+library(gt)
+library(janitor)
 
+# reading in data
+sst <- read.csv("~/Git_/ENVS-193DS_spring-2025_final/Data/SST_update2023.csv")
 ```
 
 ## Problem 1
+
+### a. Transparent Statistical Methods
+
+In part one, they used a Pearson's correlation test, as the data points are continuous and correlation was brought up in the description. In part 2, they used a one-way ANOVA test, as they are comparing more than two means by one factor (nitrogen source).
+
+### b. More Information Needed
+
+The first extra test that should be done is an Tukey's HSD test, because the ANOVA (p = 0.02) tells us that there is a significant difference between nitrogen sources, but not which ones are the most different. The Tukey's HSD test would test the differences seen between each nitrogen source, and tell us which groups are actually different (in the form of difference values and confidence interval boundaries), as well as adjusted p-values (for example, p\<0.001) to avoid type one error.
+
+The co-worker could also include analysis of the effect size (η²)which would give context for how much the grouping variable (sources of nitrogen) explains the response variable (average nitrogen load in kg/year).
+
+### c. Suggestions for Rewriting
+
+Part 1: We observed a \[strong, weak\] \[positive, negative\] relationship (Pearson's r = **correlation coefficient**) between distance from headwaters (km) and annual total nitrogen load (kg/year) (F(**degrees of freedom**) = **F value**, p = 0.03, ⍺ = **significance level**).
+
+Part 2: We observed a \[small, medium, large\] difference (η² = **effect size**) in average nitrogen load (kg/year) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands)(one-way ANOVA, F(**degrees of freedom between groups, degrees of freedom within groups**) = **F value**, p = 0.02, ⍺ = **significance level**). On average, \[source 1\] tended to have less average nitrogen load than \[source 2\] (**mean difference 1** kg/year less, 95% CI: \[**lower bound, upper bound**\] kg/year) and \[source 3\] (**mean difference 2** kg/year less, 95% CI: \[**lower bound, upper bound**\] kg/year).
+
+## Problem 2
+
+### a. Cleaning and Summarizing
