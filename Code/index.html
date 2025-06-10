@@ -102,7 +102,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#f.-check-the-diagnostics" id="toc-f.-check-the-diagnostics" class="nav-link" data-scroll-target="#f.-check-the-diagnostics">f.&nbsp;Check the Diagnostics</a></li>
   <li><a href="#g.-select-the-best-model" id="toc-g.-select-the-best-model" class="nav-link" data-scroll-target="#g.-select-the-best-model">g. Select the Best Model</a></li>
   <li><a href="#h.-visualize-the-model-predictions" id="toc-h.-visualize-the-model-predictions" class="nav-link" data-scroll-target="#h.-visualize-the-model-predictions">h. Visualize the Model Predictions</a></li>
-  <li><a href="#i.-figure-caption" id="toc-i.-figure-caption" class="nav-link" data-scroll-target="#i.-figure-caption">I. Figure Caption</a></li>
+  <li><a href="#i.-figure-caption" id="toc-i.-figure-caption" class="nav-link" data-scroll-target="#i.-figure-caption">i. Figure Caption</a></li>
+  <li><a href="#j.-calculate-model-predictions" id="toc-j.-calculate-model-predictions" class="nav-link" data-scroll-target="#j.-calculate-model-predictions">j. Calculate Model Predictions</a></li>
+  <li><a href="#k.-interpret-your-results" id="toc-k.-interpret-your-results" class="nav-link" data-scroll-target="#k.-interpret-your-results">k. Interpret Your Results</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -196,11 +198,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2021  Dec               14.4
-2 2019  Mar               13.6
-3 2022  Apr               13.3
-4 2020  Feb               14.7
-5 2023  Dec               16.1</code></pre>
+1 2021  Mar               12.6
+2 2019  Jun               15.8
+3 2023  Dec               16.1
+4 2023  Jul               16.3
+5 2020  Apr               14.3</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean) <span class="co"># show data frame structure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -408,19 +410,19 @@ model0  1 238.8318</code></pre>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="co"># add line connecting points</span></span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(</span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>     <span class="at">x =</span> <span class="st">"Distance From the Forest Edge (meters)"</span>,</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="st">"Probability of Swift Parrot Occupying Nest Box (%)"</span>,</span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>     <span class="at">color =</span> <span class="st">"Season"</span>,</span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>     <span class="at">fill =</span> <span class="st">"Season"</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>     <span class="at">x =</span> <span class="st">"Distance From the Forest Edge (meters)"</span>, <span class="co"># set x axis</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="st">"Probability of Swift Parrot Occupying Nest Box (%)"</span>, <span class="co"># set y axis</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>     <span class="at">color =</span> <span class="st">"Season"</span>, <span class="co"># set legend title</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>     <span class="at">fill =</span> <span class="st">"Season"</span> <span class="co"># set legend title</span></span>
 <span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(  <span class="co"># set colors for lines and points</span></span>
 <span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2016"</span> <span class="ot">=</span> <span class="st">"#008000"</span>,</span>
 <span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2019"</span> <span class="ot">=</span> <span class="st">"#B7410E"</span>)) <span class="sc">+</span> </span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(  <span class="co"># set colors for CI ribbon</span></span>
 <span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2016"</span> <span class="ot">=</span> <span class="st">"#008000"</span>,</span>
 <span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2019"</span> <span class="ot">=</span> <span class="st">"#B7410E"</span>)) <span class="sc">+</span> </span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme</span>(</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="co"># set theme</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme</span>(  <span class="co"># remove background and panel grids</span></span>
 <span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>     <span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>     <span class="at">panel.grid =</span> <span class="fu">element_blank</span>()</span>
 <span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -434,8 +436,39 @@ model0  1 238.8318</code></pre>
 </div>
 </section>
 <section id="i.-figure-caption" class="level3">
-<h3 class="anchored" data-anchor-id="i.-figure-caption">I. Figure Caption</h3>
-<p>[Figure 1]: <strong>Swift Parrot nest box occupancy depending on season and distance from forest edge</strong>- Figure shows the probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season. Orange line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season. Shaded ribbons represent 95% confidence interval for the respective colored lines. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. Also, on average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from :Stojanovic, Dejan et al.&nbsp;(2021). “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird [Dataset].” Dryad.&nbsp;<a href="https://doi.org/10.5061/dryad.83bk3j9sb" class="uri">https://doi.org/10.5061/dryad.83bk3j9sb</a></p>
+<h3 class="anchored" data-anchor-id="i.-figure-caption">i. Figure Caption</h3>
+<p>[Figure 1]: <strong>Swift Parrot nest box occupancy depending on season and distance from forest edge</strong>- Figure shows the probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season. Orange line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season. Shaded ribbons represent 95% confidence interval for the respective colored lines. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. Also, on average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from Stojanovic, Dejan et al.&nbsp;(2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird [Dataset]. Dryad.&nbsp;<a href="https://doi.org/10.5061/dryad.83bk3j9sb" class="uri">https://doi.org/10.5061/dryad.83bk3j9sb</a></p>
+</section>
+<section id="j.-calculate-model-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="j.-calculate-model-predictions">j. Calculate Model Predictions</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sp_preds_j <span class="ot">&lt;-</span> <span class="fu">ggpredict</span>(  <span class="co"># predict values for 0 and 900m</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  model1,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"edge_distance [0,900]"</span>, <span class="st">"season"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sp_preds_j) <span class="co"># view predicted results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Predicted probabilities of sp
+
+season: 2016
+
+edge_distance | Predicted |     95% CI
+--------------------------------------
+            0 |      0.48 | 0.33, 0.64
+          900 |      0.12 | 0.06, 0.24
+
+season: 2019
+
+edge_distance | Predicted |     95% CI
+--------------------------------------
+            0 |      0.30 | 0.18, 0.44
+          900 |      0.06 | 0.03, 0.13</code></pre>
+</div>
+</div>
+</section>
+<section id="k.-interpret-your-results" class="level3">
+<h3 class="anchored" data-anchor-id="k.-interpret-your-results">k. Interpret Your Results</h3>
+<p>In the 2016 season with newly placed nest boxes, the probability of Swift Parrot occupancy was 48% at 0 meters from the forest edge and 12% 900 meters from the edge, compared to the 2019 season with a 30% chance of occupancy at 0 meters and a 6% chance at 900 meters from the forest edge. The predictions made above show a negative nonlinear association between distance from the forest edge and probability of occupancy, meaning the probability drops with increasing distance from the forest edge. Models for the common starling showed a similar negative association, and a model in the original article shows an opposite association for tree marlins. The decrease in swift parrot occupancy from 2016 to 2019 can be explained by trends in the common starling, where they drastically increase their presence in nest boxes once the boxes have sat for a few years. The inverse relationship between swift parrot occupancy and tree marlin occupancy suggests that the reason swift parrot occupancy drops further into the forest is because many nest boxes are first taken by tree marlins.</p>
 </section>
 </section>
 

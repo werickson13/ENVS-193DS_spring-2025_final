@@ -200,24 +200,38 @@ ggplot(sp_preds_clean, aes(x = x,   # create plot and define axis as probability
              shape = 16) +
    geom_line(size = 1) + # add line connecting points
    labs(
-     x = "Distance From the Forest Edge (meters)",
-     y = "Probability of Swift Parrot Occupying Nest Box (%)",
-     color = "Season",
-     fill = "Season"
+     x = "Distance From the Forest Edge (meters)", # set x axis
+     y = "Probability of Swift Parrot Occupying Nest Box (%)", # set y axis
+     color = "Season", # set legend title
+     fill = "Season" # set legend title
    ) +
-   scale_color_manual(values = c(
+   scale_color_manual(values = c(  # set colors for lines and points
     "2016" = "#008000",
     "2019" = "#B7410E")) + 
-   scale_fill_manual(values = c(
+   scale_fill_manual(values = c(  # set colors for CI ribbon
     "2016" = "#008000",
     "2019" = "#B7410E")) + 
-   theme_bw() + 
-   theme(
+   theme_bw() + # set theme
+   theme(  # remove background and panel grids
      panel.background = element_blank(),
      panel.grid = element_blank()
    )
 ```
 
-### I. Figure Caption
+### i. Figure Caption
 
-\[Figure 1\]: **Swift Parrot nest box occupancy depending on season and distance from forest edge**- Figure shows the probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season. Orange line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season. Shaded ribbons represent 95% confidence interval for the respective colored lines. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. Also, on average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from :Stojanovic, Dejan et al. (2021). "Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird \[Dataset\]." Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
+\[Figure 1\]: **Swift Parrot nest box occupancy depending on season and distance from forest edge**- Figure shows the probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season. Orange line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season. Shaded ribbons represent 95% confidence interval for the respective colored lines. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. Also, on average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird \[Dataset\]. Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
+
+### j. Calculate Model Predictions
+
+```{r}
+sp_preds_j <- ggpredict(  # predict values for 0 and 900m
+  model1,
+  terms = c("edge_distance [0,900]", "season")
+)
+print(sp_preds_j) # view predicted results
+```
+
+### k. Interpret Your Results
+
+In the 2016 season with newly placed nest boxes, the probability of Swift Parrot occupancy was 48% at 0 meters from the forest edge and 12% 900 meters from the edge, compared to the 2019 season with a 30% chance of occupancy at 0 meters and a 6% chance at 900 meters from the forest edge. The predictions made above show a negative nonlinear association between distance from the forest edge and probability of occupancy, meaning the probability drops with increasing distance from the forest edge. Models for the common starling showed a similar negative association, and a model in the original article shows an opposite association for tree marlins. The decrease in swift parrot occupancy from 2016 to 2019 can be explained by trends in the common starling, where they drastically increase their presence in nest boxes once the boxes have sat for a few years. The inverse relationship between swift parrot occupancy and tree marlin occupancy suggests that the reason swift parrot occupancy drops further into the forest is because many nest boxes are first taken by tree marlins.
