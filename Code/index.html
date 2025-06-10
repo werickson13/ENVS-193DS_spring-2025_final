@@ -202,11 +202,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2020  Nov               15.5
-2 2020  Feb               14.7
-3 2020  Oct               19.0
-4 2021  Nov               15.8
-5 2022  Sep               19.3</code></pre>
+1 2019  Oct               17.1
+2 2021  Jun               15.9
+3 2023  Nov               16.8
+4 2021  May               14.4
+5 2018  May               13.6</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean) <span class="co"># show data frame structure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -240,16 +240,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2023"</span> <span class="ot">=</span> <span class="st">"#084594"</span></span>
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="co"># select theme with border</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>( <span class="co"># set font sizes, hide grids, and move legend</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>), </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>), <span class="co"># set visualization text sizes</span></span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),</span>
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
 <span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_blank</span>(),  <span class="co"># remove panel background and grids</span></span>
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.76</span>),</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.76</span>), <span class="co"># place legend</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>), <span class="co"># legend text size</span></span>
 <span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -274,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="c.-difference-in-seasons" class="level3">
 <h3 class="anchored" data-anchor-id="c.-difference-in-seasons">c.&nbsp;Difference in “seasons”</h3>
-<p>The first “season” is 2016/2017, and the second “season” is 2019/2020. Since the boxes were placed in 2016, they were brand new to the area during the first season, and for the second season the surrounding wildlife had time to adapt and get used to their presence.</p>
+<p>The first “season” is 2016, and the second “season” is 2019. Since the boxes were placed in 2016, they were brand new to the area during the first season, and for the second season the surrounding wildlife had time to adapt and get used to their presence.</p>
 </section>
 <section id="d.-table-of-models" class="level3">
 <h3 class="anchored" data-anchor-id="d.-table-of-models">d.&nbsp;Table of Models</h3>
@@ -318,55 +318,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="e.-run-the-models" class="level3">
 <h3 class="anchored" data-anchor-id="e.-run-the-models">e. Run the Models</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> <span class="dv">1</span>, <span class="co"># null model, formula with no predictors</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> clean_nest_boxes,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> binomial) <span class="co"># use cleaned data frame</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> edge_distance <span class="sc">+</span> season, <span class="co">#saturated model, use both predictors</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> clean_nest_boxes,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> binomial) <span class="co"># use cleaned data frame</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> season, <span class="co"># use only season predictor</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> clean_nest_boxes,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> binomial) <span class="co"># use cleaned data frame</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> edge_distance, <span class="co"># use only edge distance predictor</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> clean_nest_boxes,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> binomial) <span class="co"># use cleaned data frame</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cleaning and wrangling data for streamlined models</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>clean_nest_boxes <span class="ot">&lt;-</span> nest_boxes <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="co"># clean column names</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sp, edge_distance, season) <span class="sc">|&gt;</span> <span class="co"># show columns of interest</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">season =</span> <span class="fu">as.factor</span>(season)) <span class="co"># ensure season is a factor and not numeric</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> <span class="dv">1</span>, <span class="co"># null model, formula with no predictors</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> clean_nest_boxes, <span class="co"># use cleaned data frame</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> binomial) <span class="co"># swift parrot occupancy is binary</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> edge_distance <span class="sc">+</span> season, <span class="co">#saturated model, use both predictors</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> clean_nest_boxes, <span class="co"># use cleaned data frame</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> binomial) <span class="co"># swift parrot occupancy is binary</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> season, <span class="co"># use only season predictor</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> clean_nest_boxes, <span class="co"># use cleaned data frame</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> binomial) <span class="co"># swift parrot occupancy is binary</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> edge_distance, <span class="co"># use only edge distance predictor</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> clean_nest_boxes, <span class="co"># use cleaned data frame</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> binomial) <span class="co"># swift parrot occupancy is binary</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="f.-check-the-diagnostics" class="level3">
 <h3 class="anchored" data-anchor-id="f.-check-the-diagnostics">f.&nbsp;Check the Diagnostics</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model0))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show residual plots</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model0)) <span class="co"># residuals for null model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model1)) <span class="co"># residuals for saturated model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model2)) <span class="co"># residuals for season predictor only model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model3)) <span class="co"># residuals for forest distance only model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -375,7 +382,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="g.-select-the-best-model" class="level3">
 <h3 class="anchored" data-anchor-id="g.-select-the-best-model">g. Select the Best Model</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AICc</span>(model1, <span class="co"># best model: edge distance and year</span></span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AICc</span>(model1, <span class="co"># best model: edge distance and season</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>     model2,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>     model3,</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>     model0) <span class="sc">|&gt;</span> </span>
@@ -388,7 +395,7 @@ model2  2 236.3744
 model0  1 238.8318</code></pre>
 </div>
 </div>
-<p>The best model as determined by Akaike’s Information Criterion (AIC) includes how season and distance from the edge of the forest affect the probability of a Swift Parrot occupying a nest box.</p>
+<p>The best model as determined by Akaike’s Information Criterion (AIC) includes how season and distance from the edge of the forest influence the probability of a Swift Parrot occupying a nest box.</p>
 </section>
 <section id="h.-visualize-the-model-predictions" class="level3">
 <h3 class="anchored" data-anchor-id="h.-visualize-the-model-predictions">h. Visualize the Model Predictions</h3>
@@ -433,7 +440,7 @@ model0  1 238.8318</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -472,7 +479,7 @@ edge_distance | Predicted |     95% CI
 </section>
 <section id="k.-interpret-your-results" class="level3">
 <h3 class="anchored" data-anchor-id="k.-interpret-your-results">k. Interpret Your Results</h3>
-<p>In the 2016 season with newly placed nest boxes, the probability of Swift Parrot occupancy was 48% at 0 meters from the forest edge and 12% 900 meters from the edge, compared to the 2019 season with a 30% chance of occupancy at 0 meters and a 6% chance at 900 meters from the forest edge. The predictions made above show a negative nonlinear association between distance from the forest edge and probability of occupancy, meaning the probability drops with increasing distance from the forest edge. Models for the common starling showed a similar negative association, and a model in the original article shows an opposite association for tree marlins. The decrease in swift parrot occupancy from 2016 to 2019 can be explained by trends in the common starling, where they drastically increase their presence in nest boxes once the boxes have sat for a few years. The inverse relationship between swift parrot occupancy and tree marlin occupancy suggests that the reason swift parrot occupancy drops further into the forest is because many nest boxes are first taken by tree marlins.</p>
+<p>In the 2016 season with newly placed nest boxes, the probability of Swift Parrot occupancy (calculated in part j) was 48% [95% confidence interval: 33%, 6%] at 0 meters from the forest edge and 12% [95% confidence interval: 6%, 24%] at 900 meters from the edge, compared to the 2019 season with a 30% [95% confidence interval: 18%, 44%] chance of occupancy at 0 meters and a 6% [95% confidence interval: 3%, 13%] chance at 900 meters from the forest edge. The predictions made above in Figure 1 show a negative nonlinear association between distance from the forest edge and probability of occupancy, meaning the probability drops with increasing distance from the forest edge. Models for the common starling showed a similar negative association, and a model in the original article shows an opposite association for tree marlins. The decrease in swift parrot occupancy from 2016 to 2019 can be explained by trends in the common starling, where they drastically increase their presence in nest boxes once the boxes have sat for a few years. The inverse relationship between swift parrot occupancy and tree marlin occupancy suggests that the reason swift parrot occupancy drops further into the forest is because many nest boxes are first taken by tree marlins.</p>
 </section>
 </section>
 <section id="problem-4.-affective-and-exploratory-visualizations" class="level2">

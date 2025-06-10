@@ -90,29 +90,21 @@ ggplot(sst_clean, aes(x = month, # create plot with sst_clean dataframe, x = mon
     "2023" = "#084594"
   )) +
   theme_bw() + # select theme with border
-  theme( # set font sizes, hide grids, and move legend
-    axis.title.x = element_text(size = 16), 
+  theme(
+    axis.title.x = element_text(size = 16), # set visualization text sizes
     axis.title.y = element_text(size = 16),
     axis.text.x = element_text(size = 12),
     axis.text.y = element_text(size = 12),
-    panel.background = element_blank(),
+    panel.background = element_blank(),  # remove panel background and grids
     panel.grid.minor = element_blank(),
     panel.grid.major = element_blank(),
-    legend.position = c(0.1,0.76),
-    legend.title = element_text(size = 15),
+    legend.position = c(0.1,0.76), # place legend
+    legend.title = element_text(size = 15), # legend text size
     legend.text = element_text(size = 12)
   )
 ```
 
 ## Problem 3. Data Analysis
-
-```{r, echo = FALSE}
-# cleaning and wrangling data
-clean_nest_boxes <- nest_boxes |> 
-  clean_names() |> # clean column names
-  select(sp, edge_distance, season) |> # show columns of interest
-  mutate(season = as.factor(season)) # ensure season is a factor and not numeric
-```
 
 ### a. Response Variable
 
@@ -124,7 +116,7 @@ Swift Parrots are a critically endangered species with preferences for specific 
 
 ### c. Difference in "seasons"
 
-The first "season" is 2016/2017, and the second "season" is 2019/2020. Since the boxes were placed in 2016, they were brand new to the area during the first season, and for the second season the surrounding wildlife had time to adapt and get used to their presence.
+The first "season" is 2016, and the second "season" is 2019. Since the boxes were placed in 2016, they were brand new to the area during the first season, and for the second season the surrounding wildlife had time to adapt and get used to their presence.
 
 ### d. Table of Models
 
@@ -138,43 +130,50 @@ The first "season" is 2016/2017, and the second "season" is 2019/2020. Since the
 ### e. Run the Models
 
 ```{r}
+# cleaning and wrangling data for streamlined models
+clean_nest_boxes <- nest_boxes |> 
+  clean_names() |> # clean column names
+  select(sp, edge_distance, season) |> # show columns of interest
+  mutate(season = as.factor(season)) # ensure season is a factor and not numeric
+
 model0 <- glm(sp ~ 1, # null model, formula with no predictors
-             data = clean_nest_boxes,
-             family = binomial) # use cleaned data frame
+             data = clean_nest_boxes, # use cleaned data frame
+             family = binomial) # swift parrot occupancy is binary
 
 model1 <- glm(sp ~ edge_distance + season, #saturated model, use both predictors
-              data = clean_nest_boxes,
-              family = binomial) # use cleaned data frame
+              data = clean_nest_boxes, # use cleaned data frame
+              family = binomial) # swift parrot occupancy is binary
 
 model2 <- glm(sp ~ season, # use only season predictor
-              data = clean_nest_boxes,
-              family = binomial) # use cleaned data frame
+              data = clean_nest_boxes, # use cleaned data frame
+              family = binomial) # swift parrot occupancy is binary
 
 model3 <- glm(sp ~ edge_distance, # use only edge distance predictor
-              data = clean_nest_boxes,
-              family = binomial) # use cleaned data frame
+              data = clean_nest_boxes, # use cleaned data frame
+              family = binomial) # swift parrot occupancy is binary
 ```
 
 ### f. Check the Diagnostics
 
 ```{r}
-plot(simulateResiduals(model0))
-plot(simulateResiduals(model1))
-plot(simulateResiduals(model2))
-plot(simulateResiduals(model3))
+# show residual plots
+plot(simulateResiduals(model0)) # residuals for null model
+plot(simulateResiduals(model1)) # residuals for saturated model
+plot(simulateResiduals(model2)) # residuals for season predictor only model
+plot(simulateResiduals(model3)) # residuals for forest distance only model
 ```
 
 ### g. Select the Best Model
 
 ```{r}
-AICc(model1, # best model: edge distance and year
+AICc(model1, # best model: edge distance and season
      model2,
      model3,
      model0) |> 
   arrange(AICc) # arrange output in descending AIC order
 ```
 
-The best model as determined by Akaike's Information Criterion (AIC) includes how season and distance from the edge of the forest affect the probability of a Swift Parrot occupying a nest box.
+The best model as determined by Akaike's Information Criterion (AIC) includes how season and distance from the edge of the forest influence the probability of a Swift Parrot occupying a nest box.
 
 ### h. Visualize the Model Predictions
 
@@ -234,7 +233,7 @@ print(sp_preds_j) # view predicted results
 
 ### k. Interpret Your Results
 
-In the 2016 season with newly placed nest boxes, the probability of Swift Parrot occupancy was 48% at 0 meters from the forest edge and 12% 900 meters from the edge, compared to the 2019 season with a 30% chance of occupancy at 0 meters and a 6% chance at 900 meters from the forest edge. The predictions made above show a negative nonlinear association between distance from the forest edge and probability of occupancy, meaning the probability drops with increasing distance from the forest edge. Models for the common starling showed a similar negative association, and a model in the original article shows an opposite association for tree marlins. The decrease in swift parrot occupancy from 2016 to 2019 can be explained by trends in the common starling, where they drastically increase their presence in nest boxes once the boxes have sat for a few years. The inverse relationship between swift parrot occupancy and tree marlin occupancy suggests that the reason swift parrot occupancy drops further into the forest is because many nest boxes are first taken by tree marlins.
+In the 2016 season with newly placed nest boxes, the probability of Swift Parrot occupancy (calculated in part j) was 48% \[95% confidence interval: 33%, 6%\] at 0 meters from the forest edge and 12% \[95% confidence interval: 6%, 24%\] at 900 meters from the edge, compared to the 2019 season with a 30% \[95% confidence interval: 18%, 44%\] chance of occupancy at 0 meters and a 6% \[95% confidence interval: 3%, 13%\] chance at 900 meters from the forest edge. The predictions made above in Figure 1 show a negative nonlinear association between distance from the forest edge and probability of occupancy, meaning the probability drops with increasing distance from the forest edge. Models for the common starling showed a similar negative association, and a model in the original article shows an opposite association for tree marlins. The decrease in swift parrot occupancy from 2016 to 2019 can be explained by trends in the common starling, where they drastically increase their presence in nest boxes once the boxes have sat for a few years. The inverse relationship between swift parrot occupancy and tree marlin occupancy suggests that the reason swift parrot occupancy drops further into the forest is because many nest boxes are first taken by tree marlins.
 
 ## Problem 4. Affective and Exploratory Visualizations
 
