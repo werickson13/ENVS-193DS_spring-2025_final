@@ -157,10 +157,10 @@ model3 <- glm(sp ~ edge_distance, # use only edge distance predictor
 
 ```{r}
 # show residual plots
-plot(simulateResiduals(model0)) # residuals for null model
-plot(simulateResiduals(model1)) # residuals for saturated model
-plot(simulateResiduals(model2)) # residuals for season predictor only model
-plot(simulateResiduals(model3)) # residuals for forest distance only model
+plot(simulateResiduals(model0), main = "Model 0: Null Model") # residuals for null model
+plot(simulateResiduals(model1), main = "Model 1: Saturated Model") # residuals for saturated model
+plot(simulateResiduals(model2), main = "Model 2: Season Predictor Only") # residuals for season predictor only model
+plot(simulateResiduals(model3), main = "Model 3: Forest Distance Predictor Only") # residuals for forest distance only model
 ```
 
 ### g. Select the Best Model
@@ -180,24 +180,42 @@ The best model as determined by Akaike's Information Criterion (AIC) includes ho
 ```{r}
 sp_preds <- ggpredict(
   model1,     # choose which model to use
-  terms = c("edge_distance","season") # select predictors
-)
-
+  terms = c("edge_distance","season")) # select predictors
 sp_preds_clean <- sp_preds |> # clean column names
-  clean_names()
+  clean_names() |> 
+  rename(season = group)
+
+
+# code to include observed data for 2016 as underlying data
+observations_2016 <- clean_nest_boxes |>   # create new data frame to view data points of interest
+  filter(sp == 1, season == "2016")  # only select 2016 observations where swift parrot was present
+observations_2016_prob <- ggpredict(model1,    # running observed 2016 distances through model
+                 terms = c("edge_distance [715,735,145,105,416,435,355,296,355,392,476,259,277,278,183,218,695,745,48,122,71,190,253,270,228,282,115,114,167]", "season" )) |> # use all observed distances, n = small enough where I can type in each individually
+  filter(group == "2016") |> # only include 2016 probabilities, to not plot points that were not seen in the field
+  rename(season = group) # rename group column to be included in ggplot
+
+# code to include observed data for 2019 as underlying data
+observations_2019 <- clean_nest_boxes |>  # create new data frame
+  filter(sp == 1, season == "2019")  # only select 2019 observations where swift parrot was present
+observations_2019_prob <- ggpredict(model1,
+                  terms = c("edge_distance [774,715,749,97,130,105,529,794,29,253,370,435,392,309,250,731,14,7,141,118]", "season")) |>   # use observed 2019 distances
+  filter(group == "2019") |>  # only include 2019 values
+  rename(season = group) # rename column to be included
 
 ggplot(sp_preds_clean, aes(x = x,   # create plot and define axis as probability and distance from forest edge
                      y = predicted * 100,  # y axis is predicted probability x 100 (% format)
-                     color = group, # color by group
-                     fill = group)) + # fill color by group
-   geom_ribbon(data = sp_preds_clean, alpha = 0.2, color = NA,
+                     color = season, # color by group
+                     fill = season)) + # fill color by group
+   geom_ribbon(alpha = 0.2, color = NA,
               aes(ymin = conf_low * 100, # confidence interval boundary, adjusted for %
                   ymax = conf_high * 100, # confidence interval boundary, adjusted for %
-                  fill = group
+                  fill = season
                   )) +
-   geom_point(size = 1.5, # add circular points
+   geom_line(size = 1) + # add line for predictions
+   geom_point(data = observations_2016_prob, size = 2, # add circular points for observations
              shape = 16) +
-   geom_line(size = 1) + # add line connecting points
+   geom_point(data = observations_2019_prob, size = 2, # add circular points for observations
+             shape = 16) +
    labs(
      x = "Distance From the Forest Edge (meters)", # set x axis
      y = "Probability of Swift Parrot Occupying Nest Box (%)", # set y axis
@@ -219,7 +237,7 @@ ggplot(sp_preds_clean, aes(x = x,   # create plot and define axis as probability
 
 ### i. Figure Caption
 
-\[Figure 1\]: **Swift Parrot nest box occupancy depending on season and distance from forest edge**- Figure shows the probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season. Orange line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season. Shaded ribbons represent 95% confidence interval for the respective colored lines. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. Also, on average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird \[Dataset\]. Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
+\[Figure 1\]: **Predicted and observed Swift Parrot nest box occupancy in relation to season and distance from forest edge**- Figure shows the predicted probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line represents the predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season, and green circles represent a 2016 observation from the original dataset at that distance from teh forest edge. Orange line represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season, and orange circles represent a 2019 observation at that distance from the forest edge. Shaded ribbons represent 95% confidence interval for the respective colored lines. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. On average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird \[Dataset\]. Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
 
 ### j. Calculate Model Predictions
 
@@ -233,7 +251,7 @@ print(sp_preds_j) # view predicted results
 
 ### k. Interpret Your Results
 
-In the 2016 season with newly placed nest boxes, the probability of Swift Parrot occupancy (calculated in part j) was 48% \[95% confidence interval: 33%, 6%\] at 0 meters from the forest edge and 12% \[95% confidence interval: 6%, 24%\] at 900 meters from the edge, compared to the 2019 season with a 30% \[95% confidence interval: 18%, 44%\] chance of occupancy at 0 meters and a 6% \[95% confidence interval: 3%, 13%\] chance at 900 meters from the forest edge. The predictions made above in Figure 1 show a negative nonlinear association between distance from the forest edge and probability of occupancy, meaning the probability drops with increasing distance from the forest edge. Models for the common starling showed a similar negative association, and a model in the original article shows an opposite association for tree marlins. The decrease in swift parrot occupancy from 2016 to 2019 can be explained by trends in the common starling, where they drastically increase their presence in nest boxes once the boxes have sat for a few years. The inverse relationship between swift parrot occupancy and tree marlin occupancy suggests that the reason swift parrot occupancy drops further into the forest is because many nest boxes are first taken by tree marlins.
+In the 2016 season with newly placed nest boxes, the probability of Swift Parrot occupancy (calculated in part j) was 48% \[95% confidence interval: 33%, 6%\] at 0 meters from the forest edge and 12% \[95% confidence interval: 6%, 24%\] at 900 meters from the edge, compared to the 2019 season with a 30% \[95% confidence interval: 18%, 44%\] chance of occupancy at 0 meters and a 6% \[95% confidence interval: 3%, 13%\] chance at 900 meters from the forest edge, meaning that at both 0 meters and 900 meters a Swift Parrot is less likely to occupy a nesting box in 2019 compared to 2016. The predictions made above in Figure 1 show a negative nonlinear association between distance from the forest edge and probability of occupancy, meaning the probability of a Swift Parrot occupying a nest box drops with increasing distance from the forest edge. Models for the common starling showed a similar negative association with probability of occupancy decreasing with increased distance from forest edge, and a model in the original article shows an opposite association for tree marlins. The decrease in swift parrot occupancy from 2016 to 2019 can be explained by trends in the common starling, where they increase their presence in nest boxes once the boxes have sat for a few years. The inverse relationship between swift parrot occupancy and tree marlin occupancy, where the probability of occupancy for tree marlins rises with increasing distance from the forest edge, suggests that the reason swift parrot occupancy drops further into the forest is because many nest boxes are first taken by tree marlins.
 
 ## Problem 4. Affective and Exploratory Visualizations
 
@@ -241,7 +259,7 @@ In the 2016 season with newly placed nest boxes, the probability of Swift Parrot
 
 -   My first exploratory visualization represents mean values for water usage on days of the week through a jitterplot, while my final affective visualization utilizes a simple scatterplot, with volume of water plotted per day along the x-axis. My affective visualization also takes a more artistic approach to the data visualization, where you would need an artist statement to understand what is being represented, while my exploratory visualizations explicitly state what is shown in the figures.
 
--   All of my visualizations compare all recorded values (at the time) for volume of water used in the trial period. Also, day of the week is included in some way in each visualization.
+-   All of my visualizations compare all recorded values (at the time) for volume of water used in the trial period, and factor in at-home usage. Also, day of the week is included as a variable in some way in each visualization.
 
 -   While my initial exploratory visualizations contain much less data than my final affective visualization, all visualizations show a higher mean water usage for wednesdays as compared to thursdays. However, the magnitude of this difference is shown to be larger in the initial exploratory visualizations. This is because of the lower n value and higher probability of skewed data points, with the data not yet described as normal by the central limit theorem.
 
