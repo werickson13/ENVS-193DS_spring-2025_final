@@ -106,6 +106,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#j.-calculate-model-predictions" id="toc-j.-calculate-model-predictions" class="nav-link" data-scroll-target="#j.-calculate-model-predictions">j. Calculate Model Predictions</a></li>
   <li><a href="#k.-interpret-your-results" id="toc-k.-interpret-your-results" class="nav-link" data-scroll-target="#k.-interpret-your-results">k. Interpret Your Results</a></li>
   </ul></li>
+  <li><a href="#problem-4.-affective-and-exploratory-visualizations" id="toc-problem-4.-affective-and-exploratory-visualizations" class="nav-link" data-scroll-target="#problem-4.-affective-and-exploratory-visualizations">Problem 4. Affective and Exploratory Visualizations</a>
+  <ul class="collapse">
+  <li><a href="#a.-comparing-visualizations" id="toc-a.-comparing-visualizations" class="nav-link" data-scroll-target="#a.-comparing-visualizations">a. Comparing Visualizations</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -198,11 +202,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2021  Mar               12.6
-2 2019  Jun               15.8
-3 2023  Dec               16.1
-4 2023  Jul               16.3
-5 2020  Apr               14.3</code></pre>
+1 2020  Nov               15.5
+2 2020  Feb               14.7
+3 2020  Oct               19.0
+4 2021  Nov               15.8
+5 2022  Sep               19.3</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean) <span class="co"># show data frame structure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -469,6 +473,18 @@ edge_distance | Predicted |     95% CI
 <section id="k.-interpret-your-results" class="level3">
 <h3 class="anchored" data-anchor-id="k.-interpret-your-results">k. Interpret Your Results</h3>
 <p>In the 2016 season with newly placed nest boxes, the probability of Swift Parrot occupancy was 48% at 0 meters from the forest edge and 12% 900 meters from the edge, compared to the 2019 season with a 30% chance of occupancy at 0 meters and a 6% chance at 900 meters from the forest edge. The predictions made above show a negative nonlinear association between distance from the forest edge and probability of occupancy, meaning the probability drops with increasing distance from the forest edge. Models for the common starling showed a similar negative association, and a model in the original article shows an opposite association for tree marlins. The decrease in swift parrot occupancy from 2016 to 2019 can be explained by trends in the common starling, where they drastically increase their presence in nest boxes once the boxes have sat for a few years. The inverse relationship between swift parrot occupancy and tree marlin occupancy suggests that the reason swift parrot occupancy drops further into the forest is because many nest boxes are first taken by tree marlins.</p>
+</section>
+</section>
+<section id="problem-4.-affective-and-exploratory-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="problem-4.-affective-and-exploratory-visualizations">Problem 4. Affective and Exploratory Visualizations</h2>
+<section id="a.-comparing-visualizations" class="level3">
+<h3 class="anchored" data-anchor-id="a.-comparing-visualizations">a. Comparing Visualizations</h3>
+<ul>
+<li><p>My first exploratory visualization represents mean values for water usage on days of the week through a jitterplot, while my final affective visualization utilizes a simple scatterplot, with volume of water plotted per day along the x-axis. My affective visualization also takes a more artistic approach to the data visualization, where you would need an artist statement to understand what is being represented, while my exploratory visualizations explicitly state what is shown in the figures.</p></li>
+<li><p>All of my visualizations compare all recorded values (at the time) for volume of water used in the trial period. Also, day of the week is included in some way in each visualization.</p></li>
+<li><p>While my initial exploratory visualizations contain much less data than my final affective visualization, all visualizations show a higher mean water usage for wednesdays as compared to thursdays. However, the magnitude of this difference is shown to be larger in the initial exploratory visualizations. This is because of the lower n value and higher probability of skewed data points, with the data not yet described as normal by the central limit theorem.</p></li>
+<li><p>While I did not receive feedback during the week 9 workshop, I did have some improvements that I wanted to implement on my final affective visualization, along with my week 10 evaluations. One idea was to re-scale and stretch vertically the line connecting all points in my graph of water usage vs.&nbsp;date, which I did in adobe illustrator, in order to emphasize the differences between data points. Another idea was to add a mean line for each day of the week, but I did not do this because I did not feel like it looked good on the visualization, and wanted to avoid visual clutter.</p></li>
+</ul>
 </section>
 </section>
 
