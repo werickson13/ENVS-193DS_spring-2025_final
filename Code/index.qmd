@@ -138,16 +138,20 @@ The first "season" is 2016/2017, and the second "season" is 2019/2020. Since the
 
 ```{r, echo = FALSE}
 model0 <- glm(sp ~ 1, # null model, formula with no predictors
-             data = clean_nest_boxes) # use cleaned data frame
+             data = clean_nest_boxes,
+             family = binomial) # use cleaned data frame
 
 model1 <- glm(sp ~ edge_distance + season, #saturated model, use both predictors
-              data = clean_nest_boxes) # use cleaned data frame
+              data = clean_nest_boxes,
+              family = binomial) # use cleaned data frame
 
 model2 <- glm(sp ~ season, # use only season predictor
-              data = clean_nest_boxes) # use cleaned data frame
+              data = clean_nest_boxes,
+              family = binomial) # use cleaned data frame
 
 model3 <- glm(sp ~ edge_distance, # use only edge distance predictor
-              data = clean_nest_boxes) # use cleaned data frame
+              data = clean_nest_boxes,
+              family = binomial) # use cleaned data frame
 ```
 
 ### f. Check the Diagnostics
