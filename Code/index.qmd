@@ -176,6 +176,8 @@ AICc(model1, # best model: edge distance and year
 
 The best model as determined by Akaike's Information Criterion (AIC) includes how season and distance from the edge of the forest affect the probability of a Swift Parrot occupying a nest box.
 
+### h. Visualize the Model Predictions
+
 ```{r}
 sp_preds <- ggpredict(
   model1,     # choose which model to use
@@ -215,3 +217,7 @@ ggplot(sp_preds_clean, aes(x = x,   # create plot and define axis as probability
      panel.grid = element_blank()
    )
 ```
+
+### I. Figure Caption
+
+\[Figure 1\]: **Swift Parrot nest box occupancy depending on season and distance from forest edge**- Figure shows the probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season. Orange line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season. Shaded ribbons represent 95% confidence interval for the respective colored lines. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. Also, on average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from :Stojanovic, Dejan et al. (2021). "Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird \[Dataset\]." Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>

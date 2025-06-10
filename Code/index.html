@@ -101,6 +101,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#e.-run-the-models" id="toc-e.-run-the-models" class="nav-link" data-scroll-target="#e.-run-the-models">e. Run the Models</a></li>
   <li><a href="#f.-check-the-diagnostics" id="toc-f.-check-the-diagnostics" class="nav-link" data-scroll-target="#f.-check-the-diagnostics">f.&nbsp;Check the Diagnostics</a></li>
   <li><a href="#g.-select-the-best-model" id="toc-g.-select-the-best-model" class="nav-link" data-scroll-target="#g.-select-the-best-model">g. Select the Best Model</a></li>
+  <li><a href="#h.-visualize-the-model-predictions" id="toc-h.-visualize-the-model-predictions" class="nav-link" data-scroll-target="#h.-visualize-the-model-predictions">h. Visualize the Model Predictions</a></li>
+  <li><a href="#i.-figure-caption" id="toc-i.-figure-caption" class="nav-link" data-scroll-target="#i.-figure-caption">I. Figure Caption</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -194,11 +196,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2022  Nov               15.0
-2 2018  Jul               18.2
-3 2021  Mar               12.6
-4 2021  Apr               13.1
-5 2019  Apr               13.7</code></pre>
+1 2021  Dec               14.4
+2 2019  Mar               13.6
+3 2022  Apr               13.3
+4 2020  Feb               14.7
+5 2023  Dec               16.1</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean) <span class="co"># show data frame structure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -381,6 +383,9 @@ model0  1 238.8318</code></pre>
 </div>
 </div>
 <p>The best model as determined by Akaike’s Information Criterion (AIC) includes how season and distance from the edge of the forest affect the probability of a Swift Parrot occupying a nest box.</p>
+</section>
+<section id="h.-visualize-the-model-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="h.-visualize-the-model-predictions">h. Visualize the Model Predictions</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sp_preds <span class="ot">&lt;-</span> <span class="fu">ggpredict</span>(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  model1,     <span class="co"># choose which model to use</span></span>
@@ -427,6 +432,10 @@ model0  1 238.8318</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="i.-figure-caption" class="level3">
+<h3 class="anchored" data-anchor-id="i.-figure-caption">I. Figure Caption</h3>
+<p>[Figure 1]: <strong>Swift Parrot nest box occupancy depending on season and distance from forest edge</strong>- Figure shows the probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season. Orange line and circles represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season. Shaded ribbons represent 95% confidence interval for the respective colored lines. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. Also, on average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from :Stojanovic, Dejan et al.&nbsp;(2021). “Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird [Dataset].” Dryad.&nbsp;<a href="https://doi.org/10.5061/dryad.83bk3j9sb" class="uri">https://doi.org/10.5061/dryad.83bk3j9sb</a></p>
 </section>
 </section>
 
