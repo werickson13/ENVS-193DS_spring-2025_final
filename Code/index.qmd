@@ -110,7 +110,8 @@ ggplot(sst_clean, aes(x = month, # create plot with sst_clean dataframe, x = mon
 # cleaning and wrangling data
 clean_nest_boxes <- nest_boxes |> 
   clean_names() |> # clean column names
-  select(sp, edge_distance, season) 
+  select(sp, edge_distance, season) |> # show columns of interest
+  mutate(season = as.factor(season)) # ensure season is a factor and not numeric
 ```
 
 ### a. Response Variable
@@ -136,7 +137,7 @@ The first "season" is 2016/2017, and the second "season" is 2019/2020. Since the
 
 ### e. Run the Models
 
-```{r, echo = FALSE}
+```{r}
 model0 <- glm(sp ~ 1, # null model, formula with no predictors
              data = clean_nest_boxes,
              family = binomial) # use cleaned data frame
@@ -156,9 +157,21 @@ model3 <- glm(sp ~ edge_distance, # use only edge distance predictor
 
 ### f. Check the Diagnostics
 
-```{r, echo = FALSE}
+```{r}
 plot(simulateResiduals(model0))
 plot(simulateResiduals(model1))
 plot(simulateResiduals(model2))
 plot(simulateResiduals(model3))
 ```
+
+### g. Select the Best Model
+
+```{r}
+AICc(model1, # best model: edge distance and year
+     model2,
+     model3,
+     model0) |> 
+  arrange(AICc) # arrange output in descending AIC order
+```
+
+The best model as determined by Akaike's Information Criterion (AIC) analyzes how season and distance from the edge of the forest affect the probability of a Swift Parrot occupying a nest box.
