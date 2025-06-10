@@ -174,4 +174,38 @@ AICc(model1, # best model: edge distance and year
   arrange(AICc) # arrange output in descending AIC order
 ```
 
-The best model as determined by Akaike's Information Criterion (AIC) analyzes how season and distance from the edge of the forest affect the probability of a Swift Parrot occupying a nest box.
+The best model as determined by Akaike's Information Criterion (AIC) includes how season and distance from the edge of the forest affect the probability of a Swift Parrot occupying a nest box.
+
+```{r}
+sp_preds <- ggpredict(
+  model1,     # choose which model to use
+  terms = c("edge_distance","season") # select predictors
+)
+
+sp_preds_clean <- sp_preds |> # clean column names
+  clean_names()
+
+ggplot(sp_preds_clean, aes(x = x,   # create plot and define axis as probability and distance from forest edge
+                     y = predicted * 100,  # y axis is predicted probability x 100 (% format)
+                     color = group, # color by group
+                     fill = group)) + # fill color by group
+   geom_ribbon(data = sp_preds_clean, alpha = 0.2,
+              aes(ymin = conf_low * 100,
+                  ymax = conf_high * 100,
+                  fill = group
+                  )) +
+  geom_point(size = 2, # add circular points
+             shape = 16) +
+ geom_line(size = 1) +
+ scale_color_manual(values = c(
+   "2016" = "#008000",
+   "2019" = "#B7410E")) + 
+ scale_fill_manual(values = c(
+   "2016" = "#008000",
+   "2019" = "#B7410E")) + 
+   theme_bw()
+             
+
+
+
+```
