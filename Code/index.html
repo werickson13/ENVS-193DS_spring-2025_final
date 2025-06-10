@@ -81,16 +81,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#problem-1" id="toc-problem-1" class="nav-link active" data-scroll-target="#problem-1">Problem 1</a>
+  <li><a href="#problem-1.-research-writing" id="toc-problem-1.-research-writing" class="nav-link active" data-scroll-target="#problem-1.-research-writing">Problem 1. Research Writing</a>
   <ul class="collapse">
   <li><a href="#a.-transparent-statistical-methods" id="toc-a.-transparent-statistical-methods" class="nav-link" data-scroll-target="#a.-transparent-statistical-methods">a. Transparent Statistical Methods</a></li>
   <li><a href="#b.-more-information-needed" id="toc-b.-more-information-needed" class="nav-link" data-scroll-target="#b.-more-information-needed">b. More Information Needed</a></li>
   <li><a href="#c.-suggestions-for-rewriting" id="toc-c.-suggestions-for-rewriting" class="nav-link" data-scroll-target="#c.-suggestions-for-rewriting">c.&nbsp;Suggestions for Rewriting</a></li>
   </ul></li>
-  <li><a href="#problem-2" id="toc-problem-2" class="nav-link" data-scroll-target="#problem-2">Problem 2</a>
+  <li><a href="#problem-2.-data-visualization" id="toc-problem-2.-data-visualization" class="nav-link" data-scroll-target="#problem-2.-data-visualization">Problem 2. Data Visualization</a>
   <ul class="collapse">
   <li><a href="#a.-cleaning-and-summarizing" id="toc-a.-cleaning-and-summarizing" class="nav-link" data-scroll-target="#a.-cleaning-and-summarizing">a. Cleaning and Summarizing</a></li>
   <li><a href="#b.-visualize-the-data" id="toc-b.-visualize-the-data" class="nav-link" data-scroll-target="#b.-visualize-the-data">b. Visualize the Data</a></li>
+  </ul></li>
+  <li><a href="#problem-3.-data-analysis" id="toc-problem-3.-data-analysis" class="nav-link" data-scroll-target="#problem-3.-data-analysis">Problem 3. Data Analysis</a>
+  <ul class="collapse">
+  <li><a href="#a.-response-variable" id="toc-a.-response-variable" class="nav-link" data-scroll-target="#a.-response-variable">a. Response Variable</a></li>
+  <li><a href="#b.-purpose-of-study" id="toc-b.-purpose-of-study" class="nav-link" data-scroll-target="#b.-purpose-of-study">b. Purpose of Study</a></li>
+  <li><a href="#c.-difference-in-seasons" id="toc-c.-difference-in-seasons" class="nav-link" data-scroll-target="#c.-difference-in-seasons">c.&nbsp;Difference in “seasons”</a></li>
+  <li><a href="#d.-table-of-models" id="toc-d.-table-of-models" class="nav-link" data-scroll-target="#d.-table-of-models">d.&nbsp;Table of Models</a></li>
+  <li><a href="#e.-run-the-models" id="toc-e.-run-the-models" class="nav-link" data-scroll-target="#e.-run-the-models">e. Run the Models</a></li>
+  <li><a href="#f.-check-the-diagnostics" id="toc-f.-check-the-diagnostics" class="nav-link" data-scroll-target="#f.-check-the-diagnostics">f.&nbsp;Check the Diagnostics</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -137,13 +146,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate, <span class="at">warn.conflicts =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"~/Git_/ENVS-193DS_spring-2025_final/Data/SST_update2023.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"~/Git_/ENVS-193DS_spring-2025_final/Data/SST_update2023.csv"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>nest_boxes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"~/Git_/ENVS-193DS_spring-2025_final/Data/occdist.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="problem-1" class="level2">
-<h2 class="anchored" data-anchor-id="problem-1">Problem 1</h2>
+<section id="problem-1.-research-writing" class="level2">
+<h2 class="anchored" data-anchor-id="problem-1.-research-writing">Problem 1. Research Writing</h2>
 <section id="a.-transparent-statistical-methods" class="level3">
 <h3 class="anchored" data-anchor-id="a.-transparent-statistical-methods">a. Transparent Statistical Methods</h3>
 <p>In part one, they used a Pearson’s correlation test, as the data points are continuous and correlation was brought up in the description. In part 2, they used a one-way ANOVA test, as they are comparing more than two means by one factor (nitrogen source).</p>
@@ -159,8 +173,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Part 2: We observed a [small, medium, large] difference (η² = <strong>effect size</strong>) in average nitrogen load (kg/year) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands)(one-way ANOVA, F(<strong>degrees of freedom between groups, degrees of freedom within groups</strong>) = <strong>F value</strong>, p = 0.02, ⍺ = <strong>significance level</strong>). On average, [source 1] tended to have less average nitrogen load than [source 2] (<strong>mean difference 1</strong> kg/year less, 95% CI: [<strong>lower bound, upper bound</strong>] kg/year) and [source 3] (<strong>mean difference 2</strong> kg/year less, 95% CI: [<strong>lower bound, upper bound</strong>] kg/year).</p>
 </section>
 </section>
-<section id="problem-2" class="level2">
-<h2 class="anchored" data-anchor-id="problem-2">Problem 2</h2>
+<section id="problem-2.-data-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="problem-2.-data-visualization">Problem 2. Data Visualization</h2>
 <section id="a.-cleaning-and-summarizing" class="level3">
 <h3 class="anchored" data-anchor-id="a.-cleaning-and-summarizing">a. Cleaning and Summarizing</h3>
 <div class="cell">
@@ -179,11 +193,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 5 × 3
   year  month mean_monthly_sst
   &lt;fct&gt; &lt;ord&gt;            &lt;dbl&gt;
-1 2020  Feb               14.7
-2 2021  Oct               16.6
-3 2022  May               13.4
-4 2019  Jul               16.3
-5 2021  Feb               13.1</code></pre>
+1 2022  Sep               19.3
+2 2022  Jan               13.9
+3 2019  Jan               14.7
+4 2023  May               14.3
+5 2021  Sep               17.1</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean) <span class="co"># show data frame structure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -208,7 +222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Mean monthly sea surface temperature (°C)"</span>, <span class="co"># set y axis title</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Year"</span> <span class="co"># set legend title</span></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>( <span class="co"># select line colors</span></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2018"</span> <span class="ot">=</span> <span class="st">"#c6dbef"</span>,</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2019"</span> <span class="ot">=</span> <span class="st">"#9ecae1"</span>,</span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2020"</span> <span class="ot">=</span> <span class="st">"#6baed6"</span>,</span>
@@ -216,16 +230,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2022"</span> <span class="ot">=</span> <span class="st">"#2171b5"</span>,</span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2023"</span> <span class="ot">=</span> <span class="st">"#084594"</span></span>
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="co"># select theme with border</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>( <span class="co"># set font sizes, hide grids, and move legend</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>), </span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),</span>
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
 <span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.77</span>),</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.76</span>),</span>
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
 <span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -233,6 +247,96 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div>
 <figure class="figure">
 <p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="problem-3.-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="problem-3.-data-analysis">Problem 3. Data Analysis</h2>
+<section id="a.-response-variable" class="level3">
+<h3 class="anchored" data-anchor-id="a.-response-variable">a. Response Variable</h3>
+<p>In this data set, 1s and 0s represent the presence (or absence) of each bird species (swift parrot, common starline, tree martin, or empty). A 1 in a column means “yes” for that observation (for example, a 1 in sp means there was a swift parrot found and a 1 in e means the box was empty) while a 0 in a column means “no” for that observation (for example, a 0 in the cs column means either a species other than the common starling was present, or it was empty.</p>
+</section>
+<section id="b.-purpose-of-study" class="level3">
+<h3 class="anchored" data-anchor-id="b.-purpose-of-study">b. Purpose of Study</h3>
+<p>Swift Parrots are a critically endangered species with preferences for specific dimensions for their nests, which are provided by nest boxes that are being taken up by other species. Tree Martins are a native species that take up these nest boxes (but overall are a subordinate competitor) and Common Starlings are an introduced species that compete for nest boxes with Swift Parrots, with anecdotal evidence suggesting they can compete by destroying eggs of the Swift Parrot.</p>
+</section>
+<section id="c.-difference-in-seasons" class="level3">
+<h3 class="anchored" data-anchor-id="c.-difference-in-seasons">c.&nbsp;Difference in “seasons”</h3>
+<p>The first “season” is 2016/2017, and the second “season” is 2019/2020. Since the boxes were placed in 2016, they were brand new to the area during the first season, and for the second season the surrounding wildlife had time to adapt and get used to their presence.</p>
+</section>
+<section id="d.-table-of-models" class="level3">
+<h3 class="anchored" data-anchor-id="d.-table-of-models">d.&nbsp;Table of Models</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Model Number</th>
+<th style="text-align: center;">Season</th>
+<th style="text-align: center;">Distance to Forest Edge</th>
+<th style="text-align: center;">Model Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">no predictors (null model)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">all predictors (saturated model)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Season predictor only</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">X</td>
+<td style="text-align: center;">Distance to forest edge predictor only</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="e.-run-the-models" class="level3">
+<h3 class="anchored" data-anchor-id="e.-run-the-models">e. Run the Models</h3>
+</section>
+<section id="f.-check-the-diagnostics" class="level3">
+<h3 class="anchored" data-anchor-id="f.-check-the-diagnostics">f.&nbsp;Check the Diagnostics</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

@@ -20,12 +20,17 @@ library(tidyverse)
 library(gt)
 library(janitor)
 library(lubridate, warn.conflicts = FALSE)
+library(scales)
+library(ggeffects)
+library(MuMIn)
+library(DHARMa)
 
 # reading in data
 sst <- read.csv("~/Git_/ENVS-193DS_spring-2025_final/Data/SST_update2023.csv")
+nest_boxes <- read.csv("~/Git_/ENVS-193DS_spring-2025_final/Data/occdist.csv")
 ```
 
-## Problem 1
+## Problem 1. Research Writing
 
 ### a. Transparent Statistical Methods
 
@@ -43,7 +48,7 @@ Part 1: We observed a \[strong, weak\] \[positive, negative\] relationship (Pear
 
 Part 2: We observed a \[small, medium, large\] difference (η² = **effect size**) in average nitrogen load (kg/year) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands)(one-way ANOVA, F(**degrees of freedom between groups, degrees of freedom within groups**) = **F value**, p = 0.02, ⍺ = **significance level**). On average, \[source 1\] tended to have less average nitrogen load than \[source 2\] (**mean difference 1** kg/year less, 95% CI: \[**lower bound, upper bound**\] kg/year) and \[source 3\] (**mean difference 2** kg/year less, 95% CI: \[**lower bound, upper bound**\] kg/year).
 
-## Problem 2
+## Problem 2. Data Visualization
 
 ### a. Cleaning and Summarizing
 
@@ -97,4 +102,59 @@ ggplot(sst_clean, aes(x = month, # create plot with sst_clean dataframe, x = mon
     legend.title = element_text(size = 15),
     legend.text = element_text(size = 12)
   )
+```
+
+## Problem 3. Data Analysis
+
+```{r, echo = FALSE}
+# cleaning and wrangling data
+clean_nest_boxes <- nest_boxes |> 
+  clean_names() |> # clean column names
+  select(sp, edge_distance, season) 
+```
+
+### a. Response Variable
+
+In this data set, 1s and 0s represent the presence (or absence) of each bird species (swift parrot, common starline, tree martin, or empty). A 1 in a column means "yes" for that observation (for example, a 1 in sp means there was a swift parrot found and a 1 in e means the box was empty) while a 0 in a column means "no" for that observation (for example, a 0 in the cs column means either a species other than the common starling was present, or it was empty.
+
+### b. Purpose of Study
+
+Swift Parrots are a critically endangered species with preferences for specific dimensions for their nests, which are provided by nest boxes that are being taken up by other species. Tree Martins are a native species that take up these nest boxes (but overall are a subordinate competitor) and Common Starlings are an introduced species that compete for nest boxes with Swift Parrots, with anecdotal evidence suggesting they can compete by destroying eggs of the Swift Parrot.
+
+### c. Difference in "seasons"
+
+The first "season" is 2016/2017, and the second "season" is 2019/2020. Since the boxes were placed in 2016, they were brand new to the area during the first season, and for the second season the surrounding wildlife had time to adapt and get used to their presence.
+
+### d. Table of Models
+
+| Model Number | Season | Distance to Forest Edge | Model Description |
+|:--:|:--:|:--:|:--:|
+| 0 |  |  | no predictors (null model) |
+| 1 | X | X | all predictors (saturated model) |
+| 2 | X |  | Season predictor only |
+| 3 |  | X | Distance to forest edge predictor only |
+
+### e. Run the Models
+
+```{r, echo = FALSE}
+model0 <- glm(sp ~ 1, # null model, formula with no predictors
+             data = clean_nest_boxes) # use cleaned data frame
+
+model1 <- glm(sp ~ edge_distance + season, #saturated model, use both predictors
+              data = clean_nest_boxes) # use cleaned data frame
+
+model2 <- glm(sp ~ season, # use only season predictor
+              data = clean_nest_boxes) # use cleaned data frame
+
+model3 <- glm(sp ~ edge_distance, # use only edge distance predictor
+              data = clean_nest_boxes) # use cleaned data frame
+```
+
+### f. Check the Diagnostics
+
+```{r, echo = FALSE}
+plot(simulateResiduals(model0))
+plot(simulateResiduals(model1))
+plot(simulateResiduals(model2))
+plot(simulateResiduals(model3))
 ```
