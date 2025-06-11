@@ -4,9 +4,9 @@ author: "Wyatt Erickson"
 date: 6/10/25
 format: 
   html: 
-    toc: true
-message: false
-warning: false
+    toc: true # display table of contents
+message: false # hide all messages
+warning: false # hide all warnings
 editor: visual
 ---
 
@@ -137,7 +137,7 @@ clean_nest_boxes <- nest_boxes |>
   mutate(season = as.factor(season)) # ensure season is a factor and not numeric
 
 model0 <- glm(sp ~ 1, # null model, formula with no predictors
-             data = clean_nest_boxes, # use cleaned data frame
+             data = clean_nest_boxes, # use hidden cleaned data frame
              family = binomial) # swift parrot occupancy is binary
 
 model1 <- glm(sp ~ edge_distance + season, #saturated model, use both predictors
@@ -157,10 +157,10 @@ model3 <- glm(sp ~ edge_distance, # use only edge distance predictor
 
 ```{r}
 # show residual plots
-plot(simulateResiduals(model0), main = "Model 0: Null Model") # residuals for null model
-plot(simulateResiduals(model1), main = "Model 1: Saturated Model") # residuals for saturated model
-plot(simulateResiduals(model2), main = "Model 2: Season Predictor Only") # residuals for season predictor only model
-plot(simulateResiduals(model3), main = "Model 3: Forest Distance Predictor Only") # residuals for forest distance only model
+plot(simulateResiduals(model0)) # residuals for null model
+plot(simulateResiduals(model1)) # residuals for saturated model
+plot(simulateResiduals(model2)) # residuals for season predictor only model
+plot(simulateResiduals(model3)) # residuals for forest distance only model
 ```
 
 ### g. Select the Best Model
@@ -194,6 +194,7 @@ observations_2016_prob <- ggpredict(model1,    # running observed 2016 distances
   filter(group == "2016") |> # only include 2016 probabilities, to not plot points that were not seen in the field
   rename(season = group) # rename group column to be included in ggplot
 
+
 # code to include observed data for 2019 as underlying data
 observations_2019 <- clean_nest_boxes |>  # create new data frame
   filter(sp == 1, season == "2019")  # only select 2019 observations where swift parrot was present
@@ -202,6 +203,7 @@ observations_2019_prob <- ggpredict(model1,
   filter(group == "2019") |>  # only include 2019 values
   rename(season = group) # rename column to be included
 
+# code for plot creation
 ggplot(sp_preds_clean, aes(x = x,   # create plot and define axis as probability and distance from forest edge
                      y = predicted * 100,  # y axis is predicted probability x 100 (% format)
                      color = season, # color by group
@@ -211,7 +213,7 @@ ggplot(sp_preds_clean, aes(x = x,   # create plot and define axis as probability
                   ymax = conf_high * 100, # confidence interval boundary, adjusted for %
                   fill = season
                   )) +
-   geom_line(size = 1) + # add line for predictions
+   geom_line(size = 1)  + # add line for predictions
    geom_point(data = observations_2016_prob, size = 2, # add circular points for observations
              shape = 16) +
    geom_point(data = observations_2019_prob, size = 2, # add circular points for observations
@@ -237,14 +239,14 @@ ggplot(sp_preds_clean, aes(x = x,   # create plot and define axis as probability
 
 ### i. Figure Caption
 
-\[Figure 1\]: **Predicted and observed Swift Parrot nest box occupancy in relation to season and distance from forest edge**- Figure shows the predicted probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line represents the predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season, and green circles represent a 2016 observation from the original dataset at that distance from teh forest edge. Orange line represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season, and orange circles represent a 2019 observation at that distance from the forest edge. Shaded ribbons represent 95% confidence interval for the respective colored lines. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. On average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird \[Dataset\]. Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
+\[Figure 1\]: **Predicted and observed Swift Parrot nest box occupancy in decreasing with season progression and increased distance from forest edge**- Figure shows the predicted probability that a swift parrot will occupy a nesting box (%), calculated from a generalized linear model. Green line represents the predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2016 season, and green circles represent a 2016 observation from the original dataset at that distance from teh forest edge. Orange line represent predicted probability that a parrot will occupy a box at x meters from the forest edge for the 2019 season, and orange circles represent a 2019 observation at that distance from the forest edge. Green and orange shaded ribbons represent 95% confidence interval green and orange lines, respectively. Graph shows that there is a nonlinear negative association between probability of occupation and distance from forest edge. On average, the 2016 season had a higher probability than the 2019 season of swift parrots occupying nesting boxes. Data sourced from Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird \[Dataset\]. Dryad. <https://doi.org/10.5061/dryad.83bk3j9sb>
 
 ### j. Calculate Model Predictions
 
 ```{r}
 sp_preds_j <- ggpredict(  # predict values for 0 and 900m
   model1,
-  terms = c("edge_distance [0,900]", "season")
+  terms = c("edge_distance [0,900]", "season") # select parameters
 )
 print(sp_preds_j) # view predicted results
 ```
